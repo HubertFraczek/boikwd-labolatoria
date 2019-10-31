@@ -31,8 +31,8 @@ def isUogolniona(M):
         for i in range(len(M)):
             for j in range(len(M[0])):
                 if i != j and M[i][j] == 0:
-                    return False
-        return True
+                    return True
+        return False
     return False
 
 def isTurniejowa(M):
@@ -49,29 +49,65 @@ def kendall(M):
             for k in range(j+1, len(M)):
                 if M[i][j] == M[j][k] and M[j][k] == M[k][i] and M[i][j] == M[k][i]:
                     counter += 1
-    return counter
-
-def indeksKendalla(M, c):
     n = len(M)
     if (n % 2 == 0):
-        return (1 - c/((n**3 - 4*n) / 24))
+        return (1 - counter/((n**3 - 4*n) / 24))
     else:
-        return (1 - c/((n**3 - n) / 24))
+        return (1 - counter/((n**3 - n) / 24))
 
-print("A")
-print(A)
+def uogolnionyKendall(M):
+    n = len(M)
+    counter = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                if M[i][j] == M[j][k] and M[j][k] == M[k][i] and M[k][i] != 0:
+                    counter += 1
+                if M[i][j] == 1 or M[i][j] == -1:
+                    if M[j][k] == 0 and M[k][i] == 0:
+                        counter += 1
+                elif M[j][k] == 1 or M[j][k] == -1:
+                    if M[i][j] == 0 and M[k][i] == 0:
+                        counter += 1
+                elif M[k][i] == 1 or M[k][i] == -1:
+                    if M[i][j] == 0 and M[j][k] == 0:
+                        counter += 1
+                if M[i][j] == 0:
+                    if M[j][k] == M[k][i] and M[k][i] != 0:
+                        counter += 1
+                elif M[j][k] == 0:
+                    if M[k][i] == M[i][j] and M[i][j] != 0:
+                        counter += 1
+                elif M[k][i] == 0:
+                    if M[i][j] == M[j][k] and M[i][j] != 0:
+                        counter += 1
+    if n % 4 == 0:
+        y = (13 * n**3 - 24 * n * n - 16 * n) / 96
+    elif n % 4 == 1:
+        y = (13 * n**3 - 24 * n * n - 19 * n + 30) / 96
+    elif n % 4 == 2:
+        y = (13 * n**3 - 24 * n * n - 4 * n) / 96
+    else:
+        y = (13 * n**3 - 24 * n * n - 19 * n + 18) / 96
+
+    return 1 - (counter / y)
+
 At = turniejowa(A)
 Bt = turniejowa(B)
 Ct = turniejowa(C)
-print(At)
-print(isTurniejowa(At))
-print(isTurniejowa(Bt))
-print(isTurniejowa(Ct))
-print(isUogolniona(At))
-print(isUogolniona(Bt))
-print(isUogolniona(Ct))
-print(isUogolniona(D))
-print(isUogolniona(E))
-print(isUogolniona(F))
-print(indeksKendalla(At, kendall(At)))
-
+print("Turniejowa A - ", isTurniejowa(At))
+print("Turniejowa B - ", isTurniejowa(Bt))
+print("Turniejowa C - ", isTurniejowa(Ct))
+print("Turniejowa D - ", isTurniejowa(D))
+print("Turniejowa E - ", isTurniejowa(E))
+print("Turniejowa F - ", isTurniejowa(F))
+print("Mozliwe remisy A - ", isUogolniona(At))
+print("Mozliwe remisy B - ", isUogolniona(Bt))
+print("Mozliwe remisy C - ", isUogolniona(Ct))
+print("Mozliwe remisy E - ", isUogolniona(E))
+print("Mozliwe remisy F - ", isUogolniona(F))
+print("Kendall A - ", kendall(At))
+print("Kendall F - ", kendall(F))
+print("Uogolniony Kendall B - ", uogolnionyKendall(B))
+print("Uogolniony Kendall C - ", uogolnionyKendall(C))
+print("Uogolniony Kendall E - ", uogolnionyKendall(E))
