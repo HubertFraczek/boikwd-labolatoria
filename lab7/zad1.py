@@ -1,20 +1,14 @@
 import numpy as np
 from scipy.optimize import linprog
+import math
 
-c = [1, -1]
-A = [[-1, 0], [2, 1]]
-b = [20, 20]
+A = [[1, 1, 1], [-1, -1, -1], [-1, -2, -1], [0, 2, 1], [-1, 0, 0], [0, -1, 0],
+    [0, 0, -1]]
+b = [30, -30, -10, 20, 0, 0, 0]
+c = [-2, -1, -3]
 
-x_bounds = (0, None)
+res = linprog(c, A, b).x
+f = 2 * res[0] + res[1] + 3 * res[2]
 
-res = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, x_bounds])
-
-x2 = res.x[0]
-x3 = res.x[1]
-x1 = 30 - x2 - x3
-print("x1 =", x1)
-print("x2 =", x2)
-print("x3 =", x3)
-print("f =", 2*x1 +x2 + 3*x3)
-print("f =", (-1)*(res.fun-60))
-
+print(round(res[0]), round(res[1]), round(res[2]))
+print(round(f))
