@@ -1,14 +1,18 @@
 import numpy as np
 from scipy.optimize import linprog
 
-A = np.array([[-0.5, -0.4],
-    [-0.4, -0.2],
-    [-0.4, 0],
-    [-0.2, -0.5]])
+conf = [(4, 0), (1, 1), (8, 0), (5, 1), (2, 2), (0, 3)]
 
-c = [2000, 2800]
+A = np.array([[-4, 0],
+    [-1, -1],
+    [-8, 0],
+    [-5, 1],
+    [-2, -2],
+    [0, -3]])
 
-b = np.array([-10, -14, -8, -11]) 
+c = [12000, 18000]
+
+b = np.array([-0.1, -0.2, -0.2, -0.3, -0.4, 0]) 
 
 res = linprog(np.transpose(c), A, b).x
 
@@ -27,5 +31,8 @@ def solve_(A, y, b):
             res.append(i+1)
     return res
 
-print("kup produkty numer:")
-print(solve_(A, res, b))    
+print("(a, b) - zrób a 0.5m papierów, zrób b 1.4m papierów")
+s = solve_(A, res, b)
+
+for i in range(len(s)):
+    print(conf[s[i]-1])
